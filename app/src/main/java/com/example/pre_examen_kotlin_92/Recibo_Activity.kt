@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import java.text.DecimalFormat
 
@@ -44,7 +45,16 @@ class Recibo_Activity : AppCompatActivity() {
         lblUsuario.text = strUsuario
 
         btnGenerar.setOnClickListener {
-            btnGenerar()
+            if(txtNumeroRecibo.text.toString().equals("") || txtNombre.text.toString().equals("") || txtHorasTrabajadas.text.toString().equals("") || txtHorasExtras.text.toString().equals("") )
+            {
+                Toast.makeText(applicationContext, "No deje campos vacios", Toast.LENGTH_SHORT).show()
+            }
+            else
+            {
+                btnGenerar()
+
+            }
+
         }
 
         btnLimpiar.setOnClickListener {
@@ -83,14 +93,21 @@ class Recibo_Activity : AppCompatActivity() {
 
     private fun btnGenerar() {
         var puesto = 0
+
+
         reciboNomina.horasTrabajadas = txtHorasTrabajadas.text.toString().toDouble()
         reciboNomina.horasExtras = txtHorasExtras.text.toString().toDouble()
+
+
         puesto = when {
             rbAuxiliar.isChecked -> 1
             rbAlbañil.isChecked -> 2
             rbIngObra.isChecked -> 3
             else -> 0
         }
+
+
+
         reciboNomina.puesto = puesto
         val subtotal = reciboNomina.calcularSubtotal()
         txtSubtotal.setText(decimalFormat.format(subtotal))
